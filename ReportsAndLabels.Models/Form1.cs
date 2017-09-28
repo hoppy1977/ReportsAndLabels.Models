@@ -1,63 +1,118 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
+using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace ReportsAndLabels.Models
 {
-    public partial class Form1 : Form
-    {
-        public Form1()
-        {
-            InitializeComponent();
-        }
+	public partial class Form1 : Form
+	{
+		public Form1()
+		{
+			InitializeComponent();
+		}
 
-        private void button1_Click(object sender, EventArgs e)
-        {
-            List<Patient> newPatients = new List<Patient>();
-            Patient pt = new Patient();
-            pt.Address = new Address() { Line1 = "Strasse1", Line2 = "strasse 2", Postcode = "78467", State = "BW", Town = "Konstanz" };
-            pt.CustomerCode = 2;
-            pt.FirstName = "Hans";
-            pt.LastName = "Wurst";
-            newPatients.Add(pt);
+		private void button1_Click(object sender, EventArgs e)
+		{
+			var templateDefinition = File.ReadAllText("DoseAidCheckSheet.list");
+			var dateTimeText = DateTime.Now.ToString("yyyy_MM_dd - HH_mm_ss");
 
+			var task1 = Task.Run(() =>
+			{
+				ListLabelManager.ExportAsPdf(
+					labelDefinition: templateDefinition,
+					data: new List<DoseAidCheckSheet>
+					{
+						GetTray1Sheet(),
+					},
+					parentEntity: typeof(DoseAidCheckSheet).Name,
+					targetFilePath: dateTimeText + " [" + Thread.CurrentThread.ManagedThreadId + "]" + ".pdf");
+			});
+			var task2 = Task.Run(() =>
+			{
+				ListLabelManager.ExportAsPdf(
+					labelDefinition: templateDefinition,
+					data: new List<DoseAidCheckSheet>
+					{
+						GetTray2Sheet(),
+					},
+					parentEntity: typeof(DoseAidCheckSheet).Name,
+					targetFilePath: dateTimeText + " [" + Thread.CurrentThread.ManagedThreadId + "]" + ".pdf");
+			});
 
-            Patient pt1 = new Patient();
-            pt1.Address = new Address() { Line1 = "Strasse1", Line2 = "strasse 2", Postcode = "78467", State = "BW", Town = "Konstanz" };
-            pt1.CustomerCode = 2;
-            pt1.FirstName = "Hans";
-            pt1.LastName = "Wurst";
-            newPatients.Add(pt1);
+			Task.WaitAll(task1, task2);
+		}
 
-            DoseAidCheckSheet doseAid = new DoseAidCheckSheet()
-            {
-                Consumers = newPatients,
-                Date = DateTime.Now,
-                TrayNumber = 11,
+		private DoseAidCheckSheet GetTray1Sheet()
+		{
+			return new DoseAidCheckSheet
+			{
+				PharmacyName = "Lucy Walker Pharmacy",
+				FacilityName = "FLUC",
+				Ward = "FLUC",
+				TrayNumber = 1,
+				Date = DateTime.Parse("2017-09-28T00:00:00+10:00"),
+				PurchaseOrderId = "CMLWFLUC170928140604FLUCT1",
+				PatientCount = 5,
+				Consumers = new List<Patient>
+				{
+					new Patient
+					{
+						CustomerCode = 0,
+						FirstName = "CLINTON",
+						LastName = "BILLSBOROUGH",
+					},
+					new Patient
+					{
+						CustomerCode = 0,
+						FirstName = "PHILIPPA",
+						LastName = "BOWEN",
+					},
+					new Patient
+					{
+						CustomerCode = 0,
+						FirstName = "MOYA",
+						LastName = "CARTER",
+					},
+					new Patient
+					{
+						CustomerCode = 0,
+						FirstName = "RONALD",
+						LastName = "CHANDLER",
+					},
+					new Patient
+					{
+						CustomerCode = 0,
+						FirstName = "BARRY",
+						LastName = "CHAPMAN",
+					},
+				},
+			};
+		}
 
-            };
-
-            DoseAidCheckSheet doseAid2 = new DoseAidCheckSheet()
-            {
-                Consumers = newPatients,
-                Date = DateTime.Now,
-                TrayNumber = 11,
-
-            };
-            IEnumerable<DoseAidCheckSheet> liste = new List<DoseAidCheckSheet>() { doseAid, doseAid2 };
-                     
-            ListLabelManager.Design("h", liste, "DoseAidCheckSheet");
-
-            
-
-
-
-        }
-    }
+		private DoseAidCheckSheet GetTray2Sheet()
+		{
+			return new DoseAidCheckSheet
+			{
+				PharmacyName = "Lucy Walker Pharmacy",
+				FacilityName = "FLUC",
+				Ward = "FLUC",
+				TrayNumber = 1,
+				Date = DateTime.Parse("2017-09-28T00:00:00+10:00"),
+				PurchaseOrderId = "CMLWFLUC170928140604FLUCT2",
+				PatientCount = 1,
+				Consumers = new List<Patient>
+				{
+					new Patient
+					{
+						CustomerCode = 0,
+						FirstName = "PHILIPPA",
+						LastName = "BOWEN",
+					},
+				},
+			};
+		}
+	}
 }
