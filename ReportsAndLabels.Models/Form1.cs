@@ -9,13 +9,12 @@ namespace ReportsAndLabels.Models
 {
 	public partial class Form1 : Form
 	{
-		// ReSharper disable once NotAccessedField.Local
-		combit.ListLabel22.ListLabel _llGlobal;
+		private ListLabelManager _listLabelManager;
 
 		public Form1()
 		{
 			InitializeComponent();
-			_llGlobal = new combit.ListLabel22.ListLabel();
+			_listLabelManager = new ListLabelManager();
 		}
 
 		private void button1_Click(object sender, EventArgs e)
@@ -29,7 +28,7 @@ namespace ReportsAndLabels.Models
 
 			var task1 = Task.Run(() =>
 			{
-				ListLabelManager.ExportAsPdf(
+				_listLabelManager.ExportAsPdf(
 					labelDefinition: templateDefinition,
 					data: new List<DoseAidCheckSheet>
 					{
@@ -40,7 +39,7 @@ namespace ReportsAndLabels.Models
 			});
 			var task2 = Task.Run(() =>
 			{
-				ListLabelManager.ExportAsPdf(
+				_listLabelManager.ExportAsPdf(
 					labelDefinition: templateDefinition,
 					data: new List<DoseAidCheckSheet>
 					{

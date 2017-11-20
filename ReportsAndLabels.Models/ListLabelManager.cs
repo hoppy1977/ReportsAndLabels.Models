@@ -9,14 +9,22 @@ namespace ReportsAndLabels.Models
 {
 	public class ListLabelManager
 	{
+		// ReSharper disable once NotAccessedField.Local
+		ListLabel _llGlobal;
+
+		public ListLabelManager()
+		{
+			_llGlobal = new ListLabel();
+		}
+
 		private const string ListLabelLicenseString = "vAlqEQ";
 
-		public static string Design(string labelDefinition, IEnumerable<Object> data, string parentEntity)
+		public string Design(string labelDefinition, IEnumerable<Object> data, string parentEntity)
 		{
 			return Design(labelDefinition, data, parentEntity, null);
 		}
 
-		public static string Design(string labelDefinition, IEnumerable<Object> data, string parentEntity, string printerName)
+		public string Design(string labelDefinition, IEnumerable<Object> data, string parentEntity, string printerName)
 		{
 			using (var listLabel = new ListLabel())
 			{
@@ -48,12 +56,12 @@ namespace ReportsAndLabels.Models
 			}
 		}
 
-		public static bool Print(string labelDefinition, IEnumerable<Object> data, string parentEntity)
+		public bool Print(string labelDefinition, IEnumerable<Object> data, string parentEntity)
 		{
 			return Print(labelDefinition, data, parentEntity, null);
 		}
 
-		public static bool Print(string labelDefinition, IEnumerable<Object> data, string parentEntity, string printerName)
+		public bool Print(string labelDefinition, IEnumerable<Object> data, string parentEntity, string printerName)
 		{
 			try
 			{
@@ -97,7 +105,7 @@ namespace ReportsAndLabels.Models
 			return false;
 		}
 
-		public static void ExportAsPdf(string labelDefinition, IEnumerable<Object> data, string parentEntity, string targetFilePath)
+		public void ExportAsPdf(string labelDefinition, IEnumerable<Object> data, string parentEntity, string targetFilePath)
 		{
 			using (var listLabel = new ListLabel())
 			{
