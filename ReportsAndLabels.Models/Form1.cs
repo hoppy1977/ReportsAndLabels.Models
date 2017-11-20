@@ -24,7 +24,8 @@ namespace ReportsAndLabels.Models
 			var dateTimeText = DateTime.Now.ToString("yyyy_MM_dd - HH_mm_ss");
 
 			var path = System.Reflection.Assembly.GetExecutingAssembly().Location;
-			var directory = Path.GetDirectoryName(path) ?? ".";
+			var targetDirectory = Path.Combine(Path.GetDirectoryName(path) ?? ".", "Output");
+			Directory.CreateDirectory(targetDirectory);
 
 			var task1 = Task.Run(() =>
 			{
@@ -35,7 +36,7 @@ namespace ReportsAndLabels.Models
 						GetTray1Sheet(),
 					},
 					parentEntity: typeof(DoseAidCheckSheet).Name,
-					targetFilePath: Path.Combine(directory, dateTimeText + " [" + Thread.CurrentThread.ManagedThreadId + "]" + ".pdf"));
+					targetFilePath: Path.Combine(targetDirectory, dateTimeText + " [" + Thread.CurrentThread.ManagedThreadId + "]" + ".pdf"));
 			});
 			var task2 = Task.Run(() =>
 			{
@@ -46,7 +47,7 @@ namespace ReportsAndLabels.Models
 						GetTray2Sheet(),
 					},
 					parentEntity: typeof(DoseAidCheckSheet).Name,
-					targetFilePath: Path.Combine(directory, dateTimeText + " [" + Thread.CurrentThread.ManagedThreadId + "]" + ".pdf"));
+					targetFilePath: Path.Combine(targetDirectory, dateTimeText + " [" + Thread.CurrentThread.ManagedThreadId + "]" + ".pdf"));
 			});
 
 			Task.WaitAll(task1, task2);
