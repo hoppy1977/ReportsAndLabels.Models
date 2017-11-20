@@ -9,9 +9,13 @@ namespace ReportsAndLabels.Models
 {
 	public partial class Form1 : Form
 	{
+		// ReSharper disable once NotAccessedField.Local
+		combit.ListLabel22.ListLabel _llGlobal;
+
 		public Form1()
 		{
 			InitializeComponent();
+			_llGlobal = new combit.ListLabel22.ListLabel();
 		}
 
 		private void button1_Click(object sender, EventArgs e)

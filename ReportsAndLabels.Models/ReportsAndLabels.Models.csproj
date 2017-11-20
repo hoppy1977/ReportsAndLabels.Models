@@ -32,9 +32,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="combit.ListLabel22, Version=22.4.6400.17804, Culture=neutral, PublicKeyToken=a7a30592cb4a94be, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\combit\LL22\Beispiele\Microsoft .NET\Assemblies\Assemblies 2.0\combit.ListLabel22.dll</HintPath>
+    <Reference Include="combit.ListLabel22, Version=22.6.6519.25200, Culture=neutral, PublicKeyToken=a7a30592cb4a94be, processorArchitecture=MSIL">
+      <HintPath>..\packages\combit.ListLabel22.22.6.0\lib\combit.ListLabel22.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -73,6 +72,7 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -87,4 +87,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>CALL "$(SolutionDir)packages\combit.ListLabel22.22.6.0\Tools\PostBuild.bat" "$(PlatformTarget)" "$(TargetDir)" "$(SolutionDir)packages\combit.ListLabel22.22.6.0\Redistribution" </PostBuildEvent>
+  </PropertyGroup>
 </Project>
