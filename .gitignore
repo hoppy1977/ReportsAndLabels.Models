@@ -12,6 +12,10 @@
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
 
+[Dd]ebug/
+[Rr]elease/
+packages/
+
 # Build results
 x64/
 x86/
